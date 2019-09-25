@@ -1,0 +1,22 @@
+* Breakfast Roulette
+** Concepto
+En los desayunos suele pagar una persona toda la cuenta. Al día
+siguiente, otra persona del grupo asume los gastos. El objetivo de
+este bot es organizar de forma automática las deudas pendientes entre
+el grupo.
+
+El bot puede servir para varias instancias de grupos de desayuno.
+
+** Algunas especificaciones
+*** Recursos
+Modelo mínimo:
+- Personas
+  + Telegram_id
+  + Alias
+  + Nombre
+  + (Grupos, Cuenta)
+- Pagos
+- Evento de Desayuno
+  + Grupo
+  + Personas
+  + Cuenta total

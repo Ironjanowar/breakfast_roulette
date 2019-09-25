@@ -8,6 +8,9 @@ el grupo.
 El bot puede servir para varias instancias de grupos de desayuno.
 
 ** Algunas especificaciones
+*** Funcionalidad mínima
+El bot dirá todas las mañanas (8:30) a quien le toca pagar.
+
 *** Recursos
 Modelo mínimo:
 - Personas

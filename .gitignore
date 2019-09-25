@@ -24,3 +24,6 @@ breakfast_roulette-*.tar
 
 # Tokens
 *.token
+
+# We don't usually want to make our tokens public, do we?
+.env

@@ -10,7 +10,8 @@ defmodule BreakfastRoulette.Application do
 
     children = [
       ExGram,
-      {BreakfastRoulette.Bot, [method: :polling, token: token]}
+      {BreakfastRoulette.Bot, [method: :polling, token: token]},
+      BreakfastRoulette.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

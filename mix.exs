@@ -22,7 +22,10 @@ defmodule BreakfastRoulette.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_gram, github: "rockneurotiko/ex_gram", branch: "master"}
+      {:ex_gram, github: "rockneurotiko/ex_gram", branch: "master"},
+      {:ecto_sql, "~> 3.2"},
+      {:postgrex, "~> 0.15.1"},
+      {:jason, "~> 1.1"}
     ]
   end
 end

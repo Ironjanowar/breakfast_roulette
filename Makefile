@@ -1,33 +1,35 @@
 MIX_ENV?=dev
 
 SHELL := /bin/bash
+include .env
 
 deps:
 	mix deps.get
 	mix deps.compile
+
 compile: deps
 	mix compile
 
-env:
-	source .env
-
-start-db: env
-	docker run --rm --name "$$PG_NAME" \
-		-e POSTGRES_PASSWORD="$$PG_PASSWORD" \
-		-d -p 5432:5432 \
-		postgres
-
-stop-db: env
-	docker stop "$$PG_NAME"
-
-setup-db: env
+setup-db: pre-db start-db deps
 	mix ecto.create
 	mix ecto.migrate
 
-start: env
+start-db:
+	docker run --rm --name "$$PG_NAME" \
+		-e POSTGRES_PASSWORD="$$PG_PASSWORD" \
+		-d -p "$$PGPORT:5432" \
+		postgres
+
+stop-db:
+	docker stop "$$PG_NAME"
+
+pre-db:
+	test -d db || mkdir db
+
+start:
 	_build/dev/rel/breakfast_roulette/bin/breakfast_roulette daemon
 
-iex: env
+iex:
 	iex -S mix
 
 clean:
@@ -35,7 +37,11 @@ clean:
 
 purge: clean
 	rm -rf deps
-	rm mix.lock
+	(test -f mix.lock && rm mix.lock) || true
+
+purge-db:
+	rm -rf db
+
 
 stop:
 	_build/dev/rel/breakfast_roulette/bin/breakfast_roulette stop
@@ -46,7 +52,7 @@ attach:
 release: deps compile
 	mix release
 
-debug: env
+debug:
 	_build/dev/rel/breakfast_roulette/bin/breakfast_roulette console
 
 error_logs:
@@ -55,4 +61,4 @@ error_logs:
 debug_logs:
 	tail -n 20 -f _build/dev/rel/breakfast_roulette/log/debug.log
 
-.PHONY: deps compile release start clean purge env iex stop attach debug start-db stop-db setup-db
+.PHONY: deps compile release start clean purge iex stop attach debug start-db stop-db setup-db

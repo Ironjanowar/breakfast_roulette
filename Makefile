@@ -11,15 +11,18 @@ compile: deps
 env:
 	source .env
 
-start-db:
+start-db: env
 	docker run --rm --name "$$PG_NAME" \
 		-e POSTGRES_PASSWORD="$$PG_PASSWORD" \
 		-d -p 5432:5432 \
-		-v "$$PG_VOLUME" \
 		postgres
 
-stop-db:
+stop-db: env
 	docker stop "$$PG_NAME"
+
+setup-db: env
+	mix ecto.create
+	mix ecto.migrate
 
 start: env
 	_build/dev/rel/breakfast_roulette/bin/breakfast_roulette daemon
@@ -52,4 +55,4 @@ error_logs:
 debug_logs:
 	tail -n 20 -f _build/dev/rel/breakfast_roulette/log/debug.log
 
-.PHONY: deps compile release start clean purge env iex stop attach debug start-db stop-db
+.PHONY: deps compile release start clean purge env iex stop attach debug start-db stop-db setup-db

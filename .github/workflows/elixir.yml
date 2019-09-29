@@ -18,12 +18,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Install Dependencies
+    - name: Install git
       run: |
         apt-get update
         apt-get -y install git
+    - name: Install Dependencies
+      run: |
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
+    - name: Compile project
+      run: mix compile
     - name: Run Tests
       run: mix test

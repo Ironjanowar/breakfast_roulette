@@ -27,3 +27,6 @@ breakfast_roulette-*.tar
 
 # We don't usually want to make our tokens public, do we?
 .env
+
+# Local test db
+/db/

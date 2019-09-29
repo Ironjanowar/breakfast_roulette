@@ -25,7 +25,9 @@ defmodule BreakfastRoulette.MixProject do
       {:ex_gram, github: "rockneurotiko/ex_gram", branch: "master"},
       {:ecto_sql, "~> 3.2"},
       {:postgrex, "~> 0.15.1"},
-      {:jason, "~> 1.1"}
+      {:jason, "~> 1.1"},
+      # {:hackney, github: "benoitc/hackney", override: true},
+      {:mimerl, "~> 1.2", override: true}
     ]
   end
 end

@@ -7,7 +7,8 @@ config :breakfast_roulette, BreakfastRoulette.Repo,
   username: System.get_env("PGUSER"),
   password: System.get_env("PGPASSWORD"),
   hostname: System.get_env("PGHOST"),
-  port: System.get_env("PGPORT")
+  port: System.get_env("PGPORT"),
+  show_sensitive_data_on_connection_error: true
 
 config :breakfast_roulette, ecto_repos: [BreakfastRoulette.Repo]
 

@@ -1,5 +1,5 @@
 defmodule BreakfastRoulette.Model.Person do
-  use Ecto.Schema
+  use BreakfastRoulette.Model.Schema
 
   alias __MODULE__
   alias BreakfastRoulette.Repo
@@ -9,7 +9,6 @@ defmodule BreakfastRoulette.Model.Person do
 
   require Logger
 
-  @primary_key {:id, :binary_id, autogenerate: true}
   schema "people" do
     field(:telegram_id, :string)
     field(:first_name, :string)

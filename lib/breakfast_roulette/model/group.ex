@@ -6,7 +6,6 @@ defmodule BreakfastRoulette.Model.Group do
   alias BreakfastRoulette.Model.Person
 
   import Ecto.Changeset
-  # import Ecto.Query
 
   require Logger
 

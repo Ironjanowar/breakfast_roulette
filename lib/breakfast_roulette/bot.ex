@@ -27,23 +27,29 @@ defmodule BreakfastRoulette.Bot do
     end
   end
 
-  def handle({:command, "register", msg}, context) do
+  def handle({:command, "create", %{text: ""}}, context) do
+    msg_groups =
+      Group.get_groups()
+      |> Enum.map(fn g -> Group.view(g, :text) end)
+      |> Enum.join("\n")
+
+    answer(context, "Group list: \n#{msg_groups}")
+  end
+
+  def handle({:command, "create", %{text: name}}, context) do
     msg |> inspect |> Logger.info()
 
-    case msg.text do
-      "" ->
-        msg_groups =
-          Group.get_groups()
-          |> Enum.map(fn g -> Group.view(g, :text) end)
-          |> Enum.join("\n")
-
-        answer(context, "Group list: \n#{msg_groups}")
-
-      name ->
-        case Group.create_group(%{group_name: name}) do
-          {:ok, newGroup} -> answer(context, "Group #{newGroup} created!")
-          {:error, _error} -> answer(context, "Woops")
-        end
+    case Group.create_group(%{group_name: name}) do
+      {:ok, newGroup} -> answer(context, "Group #{newGroup} created!")
+      {:error, _error} -> answer(context, "Woops")
     end
+  end
+
+  def handle({:command, "join", %{text: ""}}, context) do
+    answer(context, "Please, join a group by saying its name")
+  end
+
+  def handle({:command, "join", %{text: name}}, context) do
+    # TODO: update many-to-many relations
   end
 end

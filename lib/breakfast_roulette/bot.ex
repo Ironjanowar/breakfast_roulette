@@ -18,7 +18,7 @@ defmodule BreakfastRoulette.Bot do
   def handle({:command, "start", msg}, context) do
     tg_user = %{
       first_name: msg.chat.first_name,
-      last_name: msg.chat.last_name,
+      # last_name: msg.chat.last_name,
       telegram_id: to_string(msg.chat.id),
       username: msg.chat.username
     }
@@ -50,9 +50,17 @@ defmodule BreakfastRoulette.Bot do
   end
 
   def handle({:command, "join", %{chat: %{username: username}, text: name}}, context) do
-    person_id = Person.get_person({:username, username})
-    group_id = Group.get_group({:name, name})
-    PersonGroup.add(person_id, group_id)
+    person = Person.get_person({:username, username})
+    group = Group.get_group({:name, name})
+    PersonGroup.add(person.id, group.id)
     answer(context, "Enjoy your breakfasts!")
+  end
+
+  def handle({:command, "call", %{chat: %{username: username}, text: name}}, context) do
+    Group.get_group({:name, name}).people
+    |> Enum.filter(fn p -> p.username != username end)
+    |> Enum.map(fn p -> ExGram.send_message(p.username, "Join the breakfast with #{name}!") end)
+
+    answer(context, "Everyone has been called :D")
   end
 end

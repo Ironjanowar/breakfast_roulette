@@ -52,7 +52,7 @@ defmodule BreakfastRoulette.Model.Group do
   end
 
   def get_group({:name, group_name}) do
-    Repo.get_by!(Group, group_name: group_name)
+    Repo.get_by!(Group, group_name: group_name) |> Repo.preload(:people)
   end
 
   @spec view(%Group{}, :text) :: String.t()

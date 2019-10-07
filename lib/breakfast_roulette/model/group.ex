@@ -46,6 +46,15 @@ defmodule BreakfastRoulette.Model.Group do
     Repo.all(Group) |> Repo.preload(:people)
   end
 
+  @spec get_group({:id | :name, String.t()}) :: {:ok, %Person{}}
+  def get_group({:id, group_id}) do
+    Repo.get!(Group, group_id)
+  end
+
+  def get_group({:name, group_name}) do
+    Repo.get_by!(Group, group_name: group_name)
+  end
+
   @spec view(%Group{}, :text) :: String.t()
   def view(group, :text) do
     "#{group.group_name} (#{length(group.people)}p.)"

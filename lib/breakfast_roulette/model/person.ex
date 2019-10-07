@@ -52,4 +52,13 @@ defmodule BreakfastRoulette.Model.Person do
   def get_people() do
     {:ok, from(Person) |> Repo.all()}
   end
+
+  @spec get_person({:id | :username, String.t()}) :: {:ok, %Person{}}
+  def get_person({:id, person_id}) do
+    Repo.get!(Person, person_id)
+  end
+
+  def get_person({:username, username}) do
+    Repo.get_by!(Person, username: username)
+  end
 end

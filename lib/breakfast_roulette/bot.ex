@@ -4,8 +4,10 @@ defmodule BreakfastRoulette.Bot do
   use ExGram.Bot,
     name: @bot
 
+  # alias BreakfastRoulette.Repo
   alias BreakfastRoulette.Model.Person
   alias BreakfastRoulette.Model.Group
+  alias BreakfastRoulette.Model.PersonGroup
 
   require Logger
 
@@ -37,8 +39,6 @@ defmodule BreakfastRoulette.Bot do
   end
 
   def handle({:command, "create", %{text: name}}, context) do
-    msg |> inspect |> Logger.info()
-
     case Group.create_group(%{group_name: name}) do
       {:ok, newGroup} -> answer(context, "Group #{newGroup} created!")
       {:error, _error} -> answer(context, "Woops")
@@ -49,7 +49,10 @@ defmodule BreakfastRoulette.Bot do
     answer(context, "Please, join a group by saying its name")
   end
 
-  def handle({:command, "join", %{text: name}}, context) do
-    # TODO: update many-to-many relations
+  def handle({:command, "join", %{chat: %{username: username}, text: name}}, context) do
+    person_id = Person.get_person({:username, username})
+    group_id = Group.get_group({:name, name})
+    PersonGroup.add(person_id, group_id)
+    answer(context, "Enjoy your breakfasts!")
   end
 end

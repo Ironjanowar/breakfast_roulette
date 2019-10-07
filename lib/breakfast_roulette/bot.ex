@@ -15,16 +15,16 @@ defmodule BreakfastRoulette.Bot do
 
   def bot(), do: @bot
 
-  def handle({:command, "start", msg}, context) do
+  def handle({:command, "start", %{from: user}}, context) do
     tg_user = %{
-      first_name: msg.chat.first_name,
-      # last_name: msg.chat.last_name,
-      telegram_id: to_string(msg.chat.id),
-      username: msg.chat.username
+      telegram_id: to_string(user.id),
+      first_name: user.first_name,
+      last_name: user[:last_name] || "",
+      username: user[:username] || ""
     }
 
     case Person.create_person(tg_user) do
-      {:ok, user} -> answer(context, "Hi #{user.first_name}!")
+      {:ok, person} -> answer(context, "Hi #{person.first_name}!")
       {:error, error} -> answer(context, error)
     end
   end

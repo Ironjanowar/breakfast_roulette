@@ -1,14 +1,17 @@
 defmodule BreakfastRoulette.Model.PersonGroup do
-  use BreakfastRoulette.Model.Schema
+  use Ecto.Schema
   import Ecto.Changeset
 
   alias __MODULE__
   alias BreakfastRoulette.Repo
+  alias BreakfastRoulette.Model.Person
+  alias BreakfastRoulette.Model.Group
 
   @primary_key false
+  @foreign_key_type :binary_id
   schema "people_groups" do
-    field(:person_id, :id)
-    field(:group_id, :id)
+    belongs_to(:person, Person, primary_key: true)
+    belongs_to(:group, Group, primary_key: true)
 
     timestamps()
   end
@@ -18,6 +21,10 @@ defmodule BreakfastRoulette.Model.PersonGroup do
     pg
     |> cast(attrs, [:person_id, :group_id])
     |> validate_required([:person_id, :group_id])
+    |> foreign_key_constraint(:person_id)
+    |> foreign_key_constraint(:group_id)
+
+    # |> unique_constraint([:person_id, :group_id])
   end
 
   def add(person_id, group_id) do

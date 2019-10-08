@@ -63,4 +63,12 @@ defmodule BreakfastRoulette.Bot do
 
     answer(context, "Everyone has been called :D")
   end
+
+  def handle({:command, "leave", %{chat: %{username: username}, text: name}}, context) do
+    group = Group.get_group({:name, name})
+    person = Person.get_person({:username, username})
+    PersonGroup.remove(group.id, person.id)
+
+    answer(context, "You should have leaved group #{name}")
+  end
 end

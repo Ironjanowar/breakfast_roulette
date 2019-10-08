@@ -1,6 +1,7 @@
 defmodule BreakfastRoulette.Model.PersonGroup do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   alias __MODULE__
   alias BreakfastRoulette.Repo
@@ -30,5 +31,15 @@ defmodule BreakfastRoulette.Model.PersonGroup do
   def add(person_id, group_id) do
     changeset(%PersonGroup{}, %{person_id: person_id, group_id: group_id})
     |> Repo.insert()
+  end
+
+  @spec remove(String.t(), String.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
+  def remove(person_id, group_id) do
+    # changeset(%PersonGroup{}, %{person_id: person_id, group_id: group_id})
+
+    from(pg in PersonGroup,
+      where: pg.person_id == ^person_id and pg.group_id == ^group_id
+    )
+    |> Repo.delete_all()
   end
 end

@@ -18,6 +18,7 @@ start-db:
 	docker run --rm --name "$$PG_NAME" \
 		-e POSTGRES_PASSWORD="$$PG_PASSWORD" \
 		-d -p "$$PGPORT:5432" \
+		-v db:/var/lib/postgresql/data \
 		postgres
 
 stop-db:

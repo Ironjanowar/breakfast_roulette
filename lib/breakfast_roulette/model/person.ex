@@ -3,6 +3,7 @@ defmodule BreakfastRoulette.Model.Person do
 
   alias __MODULE__
   alias BreakfastRoulette.Repo
+  alias BreakfastRoulette.Model.Group
 
   import Ecto.Changeset
   import Ecto.Query
@@ -14,6 +15,10 @@ defmodule BreakfastRoulette.Model.Person do
     field(:first_name, :string)
     field(:last_name, :string)
     field(:username, :string)
+
+    many_to_many(:groups, Group, join_through: "people_groups", on_replace: :delete)
+
+    timestamps()
   end
 
   defp changeset(attrs) do
@@ -46,5 +51,14 @@ defmodule BreakfastRoulette.Model.Person do
   @spec get_people() :: {:ok, [%Person{}]}
   def get_people() do
     {:ok, from(Person) |> Repo.all()}
+  end
+
+  @spec get_person({:id | :username, String.t()}) :: {:ok, %Person{}}
+  def get_person({:id, person_id}) do
+    Repo.get!(Person, person_id)
+  end
+
+  def get_person({:username, username}) do
+    Repo.get_by!(Person, username: username)
   end
 end
